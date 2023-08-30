@@ -8,7 +8,6 @@ from rest_framework.serializers import (IntegerField,
                                         ModelSerializer,
                                         PrimaryKeyRelatedField, ReadOnlyField,
                                         SerializerMethodField, ValidationError)
-
 from recipes.models import (Ingredient, IngredientRecipe, Recipe, Tag)
 from users.models import User
 

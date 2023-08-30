@@ -11,7 +11,6 @@ from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT,
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly,)
 from rest_framework.response import Response
-
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
                             ShoppingCart, Tag)
 from users.models import Follow, User
