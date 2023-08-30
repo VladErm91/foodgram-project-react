@@ -1,4 +1,9 @@
-version: '3.8'
+version: '3.9'
+volumes:
+  postgres_data:
+  static_value:
+  media_value:
+  
 services:
 
   db:
@@ -9,9 +14,9 @@ services:
       - .env
 
   backend:
-    build: ../backend/foodgram_backend
+    build: ../backend
     volumes:
-      - static_value:/app/static/
+      - static_value:/backend_static
       - media_value:/app/media/
     depends_on:
       - db
@@ -43,7 +48,3 @@ services:
       - backend
     container_name: foodgram_nginx
 
-volumes:
-  postgres_data:
-  static_value:
-  media_value:
