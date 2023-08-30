@@ -11,13 +11,13 @@ services:
   backend:
     container_name: backend_foodgram
     image: hoffstern/foodgram-backend:latest
+    volumes:
+      - static_value:/app/static/
+      - media_value:/app/media  
     env_file:
       - .env
     depends_on:
       - db
-    volumes:
-      - static_value:/app/static/
-      - media_value:/app/media/  
     restart: always
     container_name: foodgram_backend
 
@@ -40,7 +40,7 @@ services:
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
       - static_value:/var/html/static/
-      - media_value:/var/html/media/
+      - media_value:/var/html/media
     depends_on:
       - backend
 
