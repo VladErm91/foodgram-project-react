@@ -65,7 +65,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
-          script:
+          script: |
             cd infra
             sudo docker-compose down
             sudo docker pull hoffstern/foodgram_frontend:latest
