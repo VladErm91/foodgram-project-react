@@ -19,7 +19,6 @@ services:
     depends_on:
       - db
     restart: always
-    container_name: foodgram_backend
 
   frontend:
     container_name: frontend_foodgram
