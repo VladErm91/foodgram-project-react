@@ -4,7 +4,7 @@ from django.core.validators import (MaxValueValidator, MinValueValidator,
 from django.db.models import (CASCADE, CharField, DateTimeField, ForeignKey,
                               ImageField, ManyToManyField, Model,
                               PositiveSmallIntegerField, SlugField, TextField,
-                              UniqueConstraint)                         
+                              UniqueConstraint)                    
 from colorfield.fields import ColorField
 from users.models import User
 
