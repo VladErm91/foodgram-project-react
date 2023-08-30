@@ -65,7 +65,7 @@ class UserViewSet(UserViewSet):
             ).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return None
-	
+
     @action(detail=False, permission_classes=[IsAuthenticated])
     def subscriptions(self, request):
         """ Функция вывода листа подписок """
@@ -181,10 +181,3 @@ class IngredientsViewSet(ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     pagination_class = None
     filter_backends = (IngredientFilter, )
-
-    def get_queryset(self):
-
-        name = self.request.query_params.get('name')
-        if name is not None:
-            queryset = queryset.filter(name__istartswith=name.lower())
-        return queryset
