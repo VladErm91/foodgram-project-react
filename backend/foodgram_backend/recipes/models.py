@@ -1,11 +1,12 @@
-from colorfield.fields import ColorField
-from django.conf import settings
+
 from django.core.validators import (MaxValueValidator, MinValueValidator,
                                     RegexValidator)
 from django.db.models import (CASCADE, CharField, DateTimeField, ForeignKey,
                               ImageField, ManyToManyField, Model,
                               PositiveSmallIntegerField, SlugField, TextField,
                               UniqueConstraint)
+
+from django.conf import settings
 
 from users.models import User
 
