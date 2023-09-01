@@ -41,7 +41,6 @@ class CustomUserViewSet(UserViewSet):
                 Follow, user=user, author=author
             ).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-	return None
 		
     @action(detail=False, permission_classes=[IsAuthenticated])
     def subscriptions(self, request):

@@ -9,7 +9,7 @@ class AuthorPermission(BasePermission):
         return (request.method in SAFE_METHODS
                 or obj.author == request.user)
 
-             
+
 class IsCurrentUserOrAdminOrReadOnly(BasePermission):
     """
     Неавторизованным пользователям разрешён только просмотр.

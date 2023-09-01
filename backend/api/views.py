@@ -134,10 +134,9 @@ class RecipeViewSet(ModelViewSet):
         shopping_list = 'Купить в магазине:'
         for ingredient in shopping_cart:
             shopping_list += (f'{ingredient["name"]}: '
-                         f'{ingredient["total"]}'
-                         f'{ingredient["units"]}.\n')
+                            f'{ingredient["total"]}'
+                            f'{ingredient["units"]}.\n')
         file = 'shopping_list.txt'
         response = HttpResponse(shopping_list, content_type='text/plain')
         response['Content-Disposition'] = f'attachment; filename="{file}.txt"'
         return response
-
