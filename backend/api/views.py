@@ -2,13 +2,12 @@ from django.db.models import F, Sum
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT,
                                    HTTP_400_BAD_REQUEST)
 from rest_framework.permissions import (IsAuthenticated,
-                                        IsAuthenticatedOrReadOnly, AllowAny)
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
                             ShoppingCart, Tag)
@@ -18,8 +17,7 @@ from .pagination import CustomPagination
 from .permissions import AuthorPermission
 from .serializers import (CreateRecipeSerializer, RecipeShortSerializer,
                           IngredientSerializer, ReadRecipeSerializer,
-                          SubscribeListSerializer, TagSerializer,
-                          UserSerializer)
+                          TagSerializer)
 
 
 class TagViewSet(ModelViewSet):
@@ -37,14 +35,14 @@ class IngredientsViewSet(ModelViewSet):
     serializer_class = IngredientSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
     pagination_class = None
-    
+
     def get_queryset(self):
 
         queryset = Ingredient.objects.all()
         name = self.request.query_params.get('name')
         if name is not None:
             queryset = queryset.filter(name__istartswith=name.lower())
-        return queryset    
+        return queryset
 
 
 class RecipeViewSet(ModelViewSet):
@@ -62,7 +60,7 @@ class RecipeViewSet(ModelViewSet):
 
         if self.request.method in ('POST', 'PATCH'):
             return CreateRecipeSerializer
-        return ReadRecipeSerializer   
+        return ReadRecipeSerializer
 
     def add_to_base(self, request, model, pk):
         """ Функция добавления рецепта """
@@ -90,7 +88,7 @@ class RecipeViewSet(ModelViewSet):
             return Response(status=HTTP_400_BAD_REQUEST)
         databse_obj.delete()
         return Response(status=HTTP_204_NO_CONTENT)
-        
+
     @action(
         methods=('post', 'delete'),
         url_path='favorite',
@@ -135,12 +133,11 @@ class RecipeViewSet(ModelViewSet):
             ingr_list.append(recipe)
         shopping_list = 'Купить в магазине:'
         for ingredient in shopping_cart:
-            shopping_list += f'{ingredient["name"]}: {ingredient["total"]}, {ingredient["units"]}.\n'
+            shopping_list += (f'{ingredient["name"]}: '
+                         f'{ingredient["total"]}'
+                         f'{ingredient["units"]}.\n')
         file = 'shopping_list.txt'
         response = HttpResponse(shopping_list, content_type='text/plain')
         response['Content-Disposition'] = f'attachment; filename="{file}.txt"'
         return response
-
-
-
 

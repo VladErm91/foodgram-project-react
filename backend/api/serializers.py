@@ -11,6 +11,7 @@ from rest_framework.serializers import (IntegerField,
 from recipes.models import (Ingredient, IngredientRecipe, Recipe, Tag)
 from users.models import User
 
+
 class UserSerializer(UserSerializer):
     """ Сериализатор пользователя """
     is_subscribed = SerializerMethodField(read_only=True)
@@ -26,11 +27,13 @@ class UserSerializer(UserSerializer):
             return obj.following.filter(user=request.user).exists()
         return False
 
+
 class CustomUserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "username", "email", "first_name", "last_name"]
-        
+
+  
 class UserCreateSerializer(UserCreateSerializer):
     """ Сериализатор создания пользователя """
 
@@ -39,7 +42,6 @@ class UserCreateSerializer(UserCreateSerializer):
         fields = (
             'email', 'username', 'first_name',
             'last_name', 'password')
-
 
 
 class SubscribeListSerializer(UserSerializer):
