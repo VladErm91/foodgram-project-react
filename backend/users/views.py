@@ -3,8 +3,7 @@ from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import (IsAuthenticated,
-                                        IsAuthenticatedOrReadOnly)
+from rest_framework.permissions import IsAuthenticated
 
 from .models import User, Follow
 from api.pagination import CustomPagination
@@ -41,7 +40,7 @@ class CustomUserViewSet(UserViewSet):
                 Follow, user=user, author=author
             ).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-		
+
     @action(detail=False, permission_classes=[IsAuthenticated])
     def subscriptions(self, request):
         """ Функция вывода листа подписок """
@@ -53,4 +52,3 @@ class CustomUserViewSet(UserViewSet):
             pages, many=True, context={'request': request}
         )
         return self.get_paginated_response(serializer.data)
-
