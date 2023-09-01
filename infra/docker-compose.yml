@@ -7,7 +7,7 @@ volumes:
 services:
 
   db:
-    image: postgres:13.0-alpine
+    image: postgres:13.10
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
@@ -35,7 +35,7 @@ services:
    
    nginx:
     build:
-    image: hoffstern/foodgram_gateway
+    image: hoffstern/foodgram_gateway:latest
     env_file: .env
     ports:
       - "80:80"
