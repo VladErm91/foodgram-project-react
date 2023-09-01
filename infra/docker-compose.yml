@@ -35,16 +35,13 @@ services:
    
    nginx:
     build:
-      context: ./nginx
-      dockerfile: Dockerfile
+    image: hoffstern/foodgram_gateway
+    env_file: .env
     ports:
       - "80:80"
     volumes:
-      - static:/staticfiles
-      - media:/media/
       - static_value:/var/html/static_backend/
       - media_value:/var/html/media/
     depends_on:
-      - frontend
       - backend     
 
