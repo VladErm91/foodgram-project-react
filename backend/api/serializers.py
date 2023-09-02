@@ -3,11 +3,10 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers, status
 from rest_framework.exceptions import ValidationError
-from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import (IntegerField,
                                         ModelSerializer,
                                         PrimaryKeyRelatedField, ReadOnlyField,
-                                        SerializerMethodField, ValidationError)
+                                        SerializerMethodField)
 from recipes.models import (Ingredient, IngredientRecipe, Recipe, Tag)
 from users.models import User
 
