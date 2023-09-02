@@ -14,27 +14,27 @@ services:
       - .env
 
   backend:
-    container_name: backend_foodgram
-    image: hoffstern/foodgram_backend:latest
+    build: ../backend
     volumes:
       - static_value:/backend_static
-      - media_value:/app/media
-    env_file:
-      - .env
+      - media_value:/app/media/
     depends_on:
       - db
+    env_file:
+      - .env
     restart: always
+    container_name: foodgram_backend
 
   frontend:
-    container_name: frontend_foodgram
-    image: hoffstern/foodgram_frontend:latest
+    build: ../frontend
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
-      - backend
-   
+      - db
+    container_name: frontend
+
+
   nginx:
-    container_name: foodgram_nginx    
     image: nginx:1.19.3
     ports:
       - "80:80"
@@ -46,5 +46,5 @@ services:
       - media_value:/var/html/media/
     depends_on:
       - backend
-
+    container_name: foodgram_nginx
 
