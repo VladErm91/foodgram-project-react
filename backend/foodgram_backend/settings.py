@@ -1,11 +1,10 @@
 # flake8: noqa
 import os
 from dotenv import load_dotenv
-from pathlib import Path
 
 load_dotenv()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'default-value')
 
@@ -113,8 +112,8 @@ DJOSER = {
     },
 
     "PERMISSIONS": {
-        "user": ["djoser.permissions.CurrentUserOrAdminOrReadOnly"],
-        "user_list": ["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
+        "user": ["rest_framework.permissions.AllowAny"],
+        "user_list": ["rest_framework.permissions.AllowAny"],
     },
     
     "HIDE_USERS": False,
