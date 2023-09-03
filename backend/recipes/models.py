@@ -46,7 +46,7 @@ class Tag(Model):
         validators=[
             RegexValidator(
                 regex="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-                message='Проверьте вводимый формат',
+                message='Проверьте формат',
             )
         ],
     )
@@ -69,7 +69,7 @@ class Recipe(Model):
     """ Рецепт """
     author = ForeignKey(
         User,
-        verbose_name='Автор рецепта',
+        verbose_name='Автор',
         on_delete=CASCADE,
         related_name='recipes'
     )
@@ -92,11 +92,11 @@ class Recipe(Model):
         verbose_name='Теги'
     )
     cooking_time = PositiveSmallIntegerField(
-        verbose_name='Время готовки',
+        verbose_name='Время приготовления',
         validators=[MinValueValidator(
-            1, message='Время приготовления не менее 1 минуты!'
+            1, message='Время приготовления должно быть не менее 1 минуты!'
         ), MaxValueValidator(
-            1441, message='Время приготовления не более 24 часов!'
+            1441, message='Время приготовления должно быть не более 24 часов!'
         )]
     )
     pub_date = DateTimeField(
@@ -114,7 +114,7 @@ class Recipe(Model):
 
 
 class FavoritesShopCart(Model):
-    """Вспогательная модель для избранного и списка покупок"""
+    """Вспомогательная базовая модель для избранного и списка покупок"""
 
     user = ForeignKey(
         User,
@@ -156,7 +156,6 @@ class ShoppingCart(FavoritesShopCart):
     class Meta:
         default_related_name = 'shopping_cart'
         verbose_name = 'Список покупок'
-        verbose_name_plural = 'Список покупок'
         ordering = ('recipe_id',)
         constraints = [
             UniqueConstraint(

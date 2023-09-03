@@ -122,6 +122,8 @@ class RecipeViewSet(ModelViewSet):
         permission_classes=(IsAuthenticated,)
     )
     def download_shopping_cart(self, request):
+        """ Функция вывода списка ингридиентов для покупки на печать."""
+
         recipes = Recipe.objects.filter(shopping_cart__user=request.user)
         shopping_cart = IngredientRecipe.objects.filter(
             recipe__in=recipes).values(
