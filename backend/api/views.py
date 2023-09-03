@@ -14,7 +14,7 @@ from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
 
 from .filters import (RecipeFilter)
 from .pagination import CustomPagination
-from .permissions import AuthorPermission
+from .permissions import AuthorOnlyPermission
 from .serializers import (CreateRecipeSerializer, RecipeShortSerializer,
                           IngredientSerializer, ReadRecipeSerializer,
                           TagSerializer)
@@ -49,7 +49,7 @@ class RecipeViewSet(ModelViewSet):
     """ Вьюсет рецептов """
 
     queryset = Recipe.objects.all()
-    permission_classes = (IsAuthenticatedOrReadOnly, AuthorPermission)
+    permission_classes = (IsAuthenticatedOrReadOnly, AuthorOnlyPermission)
     pagination_class = CustomPagination
     filterset_class = RecipeFilter
     filter_backends = (DjangoFilterBackend, )

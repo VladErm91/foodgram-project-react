@@ -12,7 +12,7 @@ hoffsfoodgram.ddns.net
 
 ```
 - логин: root
-- почта:alexin.91@mail.ru 
+- почта:alexin.91@mail.ru
 - пароль: 1244
 ```
 
@@ -21,6 +21,7 @@ hoffsfoodgram.ddns.net
 - Django Rest Framework
 - Postgres
 - Nginx
+- Djoser
 - Docker
 
 ### Функционал проекта Foodgram:
@@ -72,4 +73,3 @@ POSTGRES_DB=django_foodgram
 DB_HOST=db
 DB_PORT=5432
 ```
-
