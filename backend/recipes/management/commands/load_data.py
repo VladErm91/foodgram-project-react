@@ -17,7 +17,7 @@ class Command(BaseCommand):
             Ingredient.objects.bulk_create(
                 Ingredient(**ingredients)
                 for ingredients in ingredient_data
-                )
+            )
 
         with open(settings.TAGS_PATH, encoding='utf-8',
                   ) as data_file_tags:

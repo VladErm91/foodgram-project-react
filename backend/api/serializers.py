@@ -197,7 +197,7 @@ class CreateRecipeSerializer(ModelSerializer):
             if not Tag.objects.filter(id=tag.id).exists():
                 raise ValidationError(
                     'Количество тегов не может быть менее 1!'
-                    )
+                )
             if tag in tags_list:
                 raise ValidationError(
                     {'tags': 'Теги должны быть уникальны'}
