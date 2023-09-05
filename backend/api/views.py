@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -9,9 +8,9 @@ from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT,
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 
-from recipes.models import (Favorite, Ingredient, 
-                            IngredientRecipe, Recipe,
-                            ShoppingCart, Tag)
+from recipes.models import (Favorite, Ingredient,
+                            Recipe, ShoppingCart,
+                            Tag)
 from .filters import (RecipeFilter, IngredientNameFilter)
 from .pagination import CustomPagination
 from .permissions import AuthorOnlyPermission
@@ -19,6 +18,7 @@ from .serializers import (CreateRecipeSerializer, RecipeShortSerializer,
                           IngredientSerializer, ReadRecipeSerializer,
                           TagSerializer)
 from .utils import download_cart
+
 
 class TagViewSet(ModelViewSet):
     """ Вьюсет тегов """
@@ -122,10 +122,8 @@ class RecipeViewSet(ModelViewSet):
         detail=False,
         permission_classes=(IsAuthenticated,)
     )
-
     def download_shopping_cart(self, request):
-        
+
         """ Функция вывода списка ингридиентов для покупки на печать."""
         user = request.user
         return download_cart(user)
-

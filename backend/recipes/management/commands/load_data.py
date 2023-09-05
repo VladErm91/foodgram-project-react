@@ -15,10 +15,9 @@ class Command(BaseCommand):
                   ) as data_file_ingredients:
             ingredient_data = json.loads(data_file_ingredients.read())
             Ingredient.objects.bulk_create(
-                  Ingredient(**ingredients) for ingredients in ingredient_data)
-                    
-            #for ingredients in ingredient_data:
-            #    Ingredient.objects.get_or_create(**ingredients)
+                  Ingredient(**ingredients)
+                  for ingredients in ingredient_data
+                  )
 
         with open(settings.TAGS_PATH, encoding='utf-8',
                   ) as data_file_tags:

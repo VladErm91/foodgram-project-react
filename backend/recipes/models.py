@@ -102,7 +102,8 @@ class Recipe(Model):
         validators=[MinValueValidator(
             1, message='Время приготовления не менее 1 минуты!'
         ), MaxValueValidator(
-            settings.MAX_COOKING_TIME, message='Время приготовления не более 24 часов!'
+            settings.MAX_COOKING_TIME,
+            message='Время приготовления не более 24 часов!'
         )]
     )
     pub_date = DateTimeField(
@@ -174,6 +175,7 @@ class ShoppingCart(FavoritesShopCart):
     def __str__(self):
         return f'{self.recipe} в списке у {self.user}'
 
+
 class IngredientRecipe(Model):
     """ Ингридиенты в рецепте """
     ingredient = ForeignKey(
@@ -188,11 +190,12 @@ class IngredientRecipe(Model):
         related_name='ingredientforrecipe'
     )
     amount = PositiveSmallIntegerField(
-       verbose_name='Количество ингридиента',
-       validators=[MinValueValidator(
+        verbose_name='Количество ингридиента',
+        validators=[MinValueValidator(
             1, message='Колличество ингридиента не может быть менее 1'
         ), MaxValueValidator(
-            settings.MAX_INGREDIENT_AMOUNT, message='Колличество игридиента не может быть более 32000'
+            settings.MAX_INGREDIENT_AMOUNT,
+            message='Колличество игридиента не может быть более 32000'
         )]
     )
 

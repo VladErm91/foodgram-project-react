@@ -156,8 +156,8 @@ class IngredientRecipeCreateSerializer(ModelSerializer):
 
     id = PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
     amount = IntegerField(
-        write_only=True, 
-        min_value=1, 
+        write_only=True,
+        min_value=1,
         max_value=settings.MAX_INGREDIENT_AMOUNT
     )
 
@@ -176,8 +176,8 @@ class CreateRecipeSerializer(ModelSerializer):
     tags = PrimaryKeyRelatedField(queryset=Tag.objects.all(), many=True)
     image = Base64ImageField(required=True)
     cooking_time = IntegerField(
-        write_only=True, 
-        min_value=1, 
+        write_only=True,
+        min_value=1,
         max_value=settings.MAX_COOKING_TIME
     )
 
@@ -195,19 +195,19 @@ class CreateRecipeSerializer(ModelSerializer):
         tags_list = []
         for tag in tags:
             if not Tag.objects.filter(id=tag.id).exists():
-            	raise ValidationError(
-                'Количество тегов не может быть менее 1!'
-            )
+                raise ValidationError(
+                    'Количество тегов не может быть менее 1!'
+                    )
             if tag in tags_list:
                 raise ValidationError(
                     {'tags': 'Теги должны быть уникальны'}
-                    )
+                )
         tags_list.append(tag)
         return data
 
     def validate_ingredients(self, ingredients):
         """Валидация ингридиентов."""
-    
+
         ingredients_list = []
         if not ingredients:
             raise serializers.ValidationError(
@@ -220,7 +220,7 @@ class CreateRecipeSerializer(ModelSerializer):
             if int(ingredient.get('amount')) < 1:
                 raise serializers.ValidationError(
                     'Количество ингредиента больше 0')
-        return ingredients     
+            return ingredients
 
     def ingredient_recipe_bulk_create(self, ingredients, recipe):
         """Создание ингредиентов рецепта."""
