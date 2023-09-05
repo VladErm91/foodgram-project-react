@@ -1,6 +1,7 @@
 # flake8: noqa
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 
 load_dotenv()
 
@@ -79,7 +80,7 @@ DATABASES = {
            'PORT': os.getenv('DB_PORT', default='5432')
      }
 }
-
+  
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -102,12 +103,14 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
     ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 6,
 }
 
 DJOSER = {
     "SERIALIZERS": {
-        "user_create": "api.serializers.UserCreateSerializer",
-        "user": "api.serializers.UserSerializer",
+        "user_create": "api.serializers.CustomUserCreateSerializer",
+        "user": "api.serializers.CustomUserSerializer",
         "current_user": "api.serializers.UserSerializer",
     },
 
@@ -135,8 +138,23 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+##API Variables
 LENGTH_FIELD_USER_1 = 150
 
 LENGTH_FIELD_USER_2 = 254
 
-LENGTH_RECIPES = 200
+LENGTH_RECIPES = 250
+
+LENGTH_RECIPES_NAME = 75
+
+LENGTH_MEASURE = 10
+
+MAX_COOKING_TIME = 1441
+
+MAX_INGREDIENT_AMOUNT = 32000
+## DATA PATHS
+INGREDIENTS_PATH = 'data/ingredients.json'
+
+TAGS_PATH = 'data/tags.json'
+ 
+

@@ -1,24 +1,24 @@
-from django.db.models import F, Sum
-from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT,
                                    HTTP_400_BAD_REQUEST)
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
-from rest_framework.response import Response
-from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
-                            ShoppingCart, Tag)
 
-from .filters import (RecipeFilter)
+from recipes.models import (Favorite, Ingredient, 
+                            IngredientRecipe, Recipe,
+                            ShoppingCart, Tag)
+from .filters import (RecipeFilter, IngredientNameFilter)
 from .pagination import CustomPagination
 from .permissions import AuthorOnlyPermission
 from .serializers import (CreateRecipeSerializer, RecipeShortSerializer,
                           IngredientSerializer, ReadRecipeSerializer,
                           TagSerializer)
-
+from .utils import download_cart
 
 class TagViewSet(ModelViewSet):
     """ Вьюсет тегов """
@@ -34,6 +34,7 @@ class IngredientsViewSet(ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    filter_backends = (IngredientNameFilter, )
     pagination_class = None
 
     def get_queryset(self):
@@ -121,24 +122,10 @@ class RecipeViewSet(ModelViewSet):
         detail=False,
         permission_classes=(IsAuthenticated,)
     )
-    def download_shopping_cart(self, request):
-        """ Функция вывода списка ингридиентов для покупки на печать."""
 
-        recipes = Recipe.objects.filter(shopping_cart__user=request.user)
-        shopping_cart = IngredientRecipe.objects.filter(
-            recipe__in=recipes).values(
-            name=F('ingredient__name'),
-            units=F('ingredient__measurement_unit')).order_by(
-            'ingredient__name').annotate(total=Sum('amount'))
-        ingr_list = []
-        for recipe in shopping_cart:
-            ingr_list.append(recipe)
-        shopping_list = 'Купить в магазине:'
-        for ingredient in shopping_cart:
-            shopping_list += (f'{ingredient["name"]}: '
-                              f'{ingredient["total"]}'
-                              f'{ingredient["units"]}.\n')
-        file = 'shopping_list.txt'
-        response = HttpResponse(shopping_list, content_type='text/plain')
-        response['Content-Disposition'] = f'attachment; filename="{file}.txt"'
-        return response
+    def download_shopping_cart(self, request):
+        
+        """ Функция вывода списка ингридиентов для покупки на печать."""
+        user = request.user
+        return download_cart(user)
+

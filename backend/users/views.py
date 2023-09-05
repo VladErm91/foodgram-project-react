@@ -7,13 +7,13 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import User, Follow
 from api.pagination import CustomPagination
-from api.serializers import SubscribeListSerializer, UserSerializer
+from api.serializers import SubscribeListSerializer, CustomUserSerializer
 
 
 class CustomUserViewSet(UserViewSet):
     """ Вьюсет пользователя """
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CustomUserSerializer
     pagination_class = CustomPagination
 
     @action(

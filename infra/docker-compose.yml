@@ -17,7 +17,7 @@ services:
     container_name: backend_foodgram
     image: hoffstern/foodgram_backend:latest
     volumes:
-      - static_value:/backend_static
+      - static_value:/app/static/
       - media_value:/app/media
     env_file:
       - .env

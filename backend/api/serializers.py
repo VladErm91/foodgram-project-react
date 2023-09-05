@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
@@ -11,7 +12,7 @@ from recipes.models import (Ingredient, IngredientRecipe, Recipe, Tag)
 from users.models import User
 
 
-class UserSerializer(UserSerializer):
+class CustomUserSerializer(UserSerializer):
     """ Сериализатор пользователя """
     is_subscribed = SerializerMethodField(read_only=True)
 
@@ -27,13 +28,7 @@ class UserSerializer(UserSerializer):
         return False
 
 
-class CustomUserSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["id", "username", "email", "first_name", "last_name"]
-
-
-class UserCreateSerializer(UserCreateSerializer):
+class CustomUserCreateSerializer(UserCreateSerializer):
     """ Сериализатор создания пользователя """
 
     class Meta:
@@ -76,7 +71,7 @@ class SubscribeListSerializer(UserSerializer):
         request = self.context.get('request')
         limit = request.GET.get('recipes_limit')
         recipes = obj.recipes.all()
-        if limit:
+        if limit and limit.is_integer():
             recipes = recipes[: int(limit)]
         serializer = RecipeShortSerializer(recipes, many=True, read_only=True)
         return serializer.data
@@ -161,7 +156,9 @@ class IngredientRecipeCreateSerializer(ModelSerializer):
 
     id = PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
     amount = IntegerField(
-        write_only=True, min_value=1, max_value=32000
+        write_only=True, 
+        min_value=1, 
+        max_value=settings.MAX_INGREDIENT_AMOUNT
     )
 
     class Meta:
@@ -179,7 +176,9 @@ class CreateRecipeSerializer(ModelSerializer):
     tags = PrimaryKeyRelatedField(queryset=Tag.objects.all(), many=True)
     image = Base64ImageField(required=True)
     cooking_time = IntegerField(
-        write_only=True, min_value=1, max_value=32000
+        write_only=True, 
+        min_value=1, 
+        max_value=settings.MAX_COOKING_TIME
     )
 
     class Meta:
@@ -190,14 +189,38 @@ class CreateRecipeSerializer(ModelSerializer):
         )
         read_only_fields = ('author',)
 
-    def validate(self, data):
-        """Валидация данных."""
-
-        if not data.get('tags'):
-            raise ValidationError(
+    def validate_tags(self, data):
+        """Валидация тегов."""
+        tags = data
+        tags_list = []
+        for tag in tags:
+            if not Tag.objects.filter(id=tag.id).exists():
+            	raise ValidationError(
                 'Количество тегов не может быть менее 1!'
             )
+            if tag in tags_list:
+                raise ValidationError(
+                    {'tags': 'Теги должны быть уникальны'}
+                    )
+        tags_list.append(tag)
         return data
+
+    def validate_ingredients(self, ingredients):
+        """Валидация ингридиентов."""
+    
+        ingredients_list = []
+        if not ingredients:
+            raise serializers.ValidationError(
+                'Отсутствуют ингридиенты')
+        for ingredient in ingredients:
+            if ingredient['id'] in ingredients_list:
+                raise serializers.ValidationError(
+                    'Ингридиенты должны быть уникальны')
+            ingredients_list.append(ingredient['id'])
+            if int(ingredient.get('amount')) < 1:
+                raise serializers.ValidationError(
+                    'Количество ингредиента больше 0')
+        return ingredients     
 
     def ingredient_recipe_bulk_create(self, ingredients, recipe):
         """Создание ингредиентов рецепта."""
