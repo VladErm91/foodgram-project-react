@@ -71,8 +71,14 @@ class SubscribeListSerializer(UserSerializer):
         request = self.context.get('request')
         limit = request.GET.get('recipes_limit')
         recipes = obj.recipes.all()
-        if limit and limit.is_integer():
-            recipes = recipes[: int(limit)]
+        try:
+            limit_numb = int(limit)
+        except:
+            raise ValidationError(
+                'Не возможно преобразовать string d int'
+            )
+        if limit:
+            recipes = recipes[: limit_numb]
         serializer = RecipeShortSerializer(recipes, many=True, read_only=True)
         return serializer.data
 
