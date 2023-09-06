@@ -77,7 +77,7 @@ class SubscribeListSerializer(UserSerializer):
             raise ValidationError(
                 'Не возможно преобразовать string d int'
             )
-        if limit:
+        if limit_numb:
             recipes = recipes[: limit_numb]
         serializer = RecipeShortSerializer(recipes, many=True, read_only=True)
         return serializer.data
