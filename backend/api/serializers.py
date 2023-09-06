@@ -72,7 +72,6 @@ class SubscribeListSerializer(UserSerializer):
         limit = request.GET.get('recipes_limit')
         recipes = obj.recipes.all()
         limit_numb = int(limit)
-
         if limit_numb:
             recipes = recipes[: limit_numb]
         else:
@@ -80,7 +79,7 @@ class SubscribeListSerializer(UserSerializer):
                 'Не возможно преобразовать строку в число'
             )
         serializer = RecipeShortSerializer(recipes, many=True, read_only=True)
-        return serializer.data
+    return serializer.data
 
 
 class TagSerializer(ModelSerializer):
