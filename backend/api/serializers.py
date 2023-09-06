@@ -71,8 +71,8 @@ class SubscribeListSerializer(UserSerializer):
         request = self.context.get('request')
         limit = request.GET.get('recipes_limit')
         recipes = obj.recipes.all()
-        limit_numb = int(limit)
         if limit:
+            limit_numb = int(limit)
             if isinstance(limit_numb, int):
                 recipes = recipes[: limit_numb]
             else:
