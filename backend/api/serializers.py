@@ -73,7 +73,7 @@ class SubscribeListSerializer(UserSerializer):
         recipes = obj.recipes.all()
         limit_numb = int(limit)
         if limit:
-            if isinstance(limit_numb,int):
+            if isinstance(limit_numb, int):
                 recipes = recipes[: limit_numb]
             else:
                 raise ValidationError(
