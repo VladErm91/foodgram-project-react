@@ -51,14 +51,12 @@ docker compose up -d --build
 ```
 docker compose exec backend python manage.py makemigrations
 docker compose exec backend python manage.py migrate
-
 ```
 
 Сбор статики и наполнение базы данных пулом тегов и ингридиентов:
 ```
 docker compose exec backend python manage.py collectstatic --no-input
 docker compose exec backend python manage.py load_data
-
 ```
 
 ### Необходимые переменные среды (.env)
