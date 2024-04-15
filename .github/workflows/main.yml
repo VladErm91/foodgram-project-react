@@ -72,6 +72,7 @@ jobs:
             touch .env
             echo SECRET_KEY='${{ secrets.SECRET_KEY }}' >> .env
             echo DEBUG=${{ vars.DEBUG }} >> .env
+            echo ALLOWED_HOSTS=${{ vars.HOSTS }} >> .env
 
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
